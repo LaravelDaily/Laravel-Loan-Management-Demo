@@ -23,7 +23,6 @@ class LoanApplication extends Model
     protected $fillable = [
         'loan_amount',
         'description',
-        'status_id',
         'analyst_id',
         'cfo_id',
         'created_at',
@@ -31,6 +30,16 @@ class LoanApplication extends Model
         'deleted_at',
         'created_by_id',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        self::creating(function (LoanApplication $loanApplication) {
+            $processingStatus = Status::whereName('Processing')->first();
+
+            $loanApplication->status()->associate($processingStatus);
+        });
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {

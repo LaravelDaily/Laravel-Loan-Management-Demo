@@ -8,11 +8,19 @@ class PermissionRoleTableSeeder extends Seeder
 {
     public function run()
     {
-        $admin_permissions = Permission::all();
-        Role::findOrFail(1)->permissions()->sync($admin_permissions->pluck('id'));
-        $user_permissions = $admin_permissions->filter(function ($permission) {
-            return substr($permission->title, 0, 5) != 'user_' && substr($permission->title, 0, 5) != 'role_' && substr($permission->title, 0, 11) != 'permission_';
+        $all_permissions = Permission::all();
+        $admin_permissions = $all_permissions->filter(function ($permission) {
+            return $permission->title != 'loan_application_create';
+        });
+        Role::findOrFail(1)->permissions()->sync($admin_permissions);
+        $user_permissions = $all_permissions->filter(function ($permission) {
+            return $permission->title == 'loan_application_access' || $permission->title == 'loan_application_create' || $permission->title == 'loan_application_show';
         });
         Role::findOrFail(2)->permissions()->sync($user_permissions);
+        $analyst_cfo_permissions = $user_permissions->filter(function ($permission) {
+            return $permission->title != 'loan_application_create';
+        });
+        Role::findOrFail(3)->permissions()->sync($analyst_cfo_permissions);
+        Role::findOrFail(4)->permissions()->sync($analyst_cfo_permissions);
     }
 }
