@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Observers\LoanApplicationObserver;
 use App\Traits\Auditable;
 use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -32,14 +33,9 @@ class LoanApplication extends Model
         'status_id',
     ];
 
-    public function __construct(array $attributes = [])
+    protected static function booted()
     {
-        parent::__construct($attributes);
-        self::creating(function (LoanApplication $loanApplication) {
-            $processingStatus = Status::whereName('Processing')->first();
-
-            $loanApplication->status()->associate($processingStatus);
-        });
+        self::observe(LoanApplicationObserver::class);
     }
 
     protected function serializeDate(DateTimeInterface $date)

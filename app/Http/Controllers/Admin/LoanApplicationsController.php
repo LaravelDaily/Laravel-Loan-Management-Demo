@@ -163,13 +163,13 @@ class LoanApplicationsController extends Controller
             'comment_text' => 'required'
         ]);
 
-        $loanApplication->update([
-            'status_id' => $status
-        ]);
-
         $loanApplication->comments()->create([
             'comment_text' => $request->comment_text,
             'user_id'      => $user->id
+        ]);
+
+        $loanApplication->update([
+            'status_id' => $status
         ]);
 
         return redirect()->route('admin.loan-applications.index')->with('message', 'Analysis has been submitted');
