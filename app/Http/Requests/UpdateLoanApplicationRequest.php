@@ -11,7 +11,11 @@ class UpdateLoanApplicationRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('loan_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(
+            Gate::denies('loan_application_edit') || !in_array($this->route()->loan_application->status_id, [6, 7]),
+            Response::HTTP_FORBIDDEN,
+            '403 Forbidden'
+        );
 
         return true;
     }

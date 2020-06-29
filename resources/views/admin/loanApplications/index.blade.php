@@ -61,7 +61,7 @@
                                 {{ $loanApplication->description ?? '' }}
                             </td>
                             <td>
-                                {{ $loanApplication->status->name ?? '' }}
+                                {{ $user->is_user && $loanApplication->status_id < 8 ? $defaultStatus->name : $loanApplication->status->name }}
                             </td>
                             <td>
                                 {{ $loanApplication->analyst->name ?? '' }}
@@ -70,17 +70,32 @@
                                 {{ $loanApplication->cfo->name ?? '' }}
                             </td>
                             <td>
+                                @if($user->is_admin && in_array($loanApplication->status_id, [1, 3, 4]))
+                                    <a class="btn btn-xs btn-success" href="{{ route('admin.loan-applications.showSend', $loanApplication->id) }}">
+                                        Send to
+                                        @if($loanApplication->status_id == 1)
+                                            analyst
+                                        @else
+                                            CFO
+                                        @endif
+                                    </a>
+                                @elseif(($user->is_analyst && $loanApplication->status_id == 2) || ($user->is_cfo && $loanApplication->status_id == 5))
+                                    <a class="btn btn-xs btn-success" href="{{ route('admin.loan-applications.showAnalyze', $loanApplication->id) }}">
+                                        Submit analysis
+                                    </a>
+                                @endif
+
                                 @can('loan_application_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.loan-applications.show', $loanApplication->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
-                                @can('loan_application_edit')
+                                @if(Gate::allows('loan_application_edit') && in_array($loanApplication->status_id, [6,7]))
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.loan-applications.edit', $loanApplication->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
-                                @endcan
+                                @endif
 
                                 @can('loan_application_delete')
                                     <form action="{{ route('admin.loan-applications.destroy', $loanApplication->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
@@ -148,7 +163,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>

@@ -10,20 +10,20 @@ trait MultiTenantModelTrait
     public static function bootMultiTenantModelTrait()
     {
         if (!app()->runningInConsole() && auth()->check()) {
-            $isAdmin = auth()->user()->roles->contains(1);
-            static::creating(function ($model) use ($isAdmin) {
-// Prevent admin from setting his own id - admin entries are global.
-
-// If required, remove the surrounding IF condition and admins will act as users
-                if (!$isAdmin) {
-                    $model->created_by_id = auth()->id();
-                }
+            $user = auth()->user();
+            static::creating(function ($model) {
+                $model->created_by_id = auth()->id();
             });
-            if (!$isAdmin) {
-                static::addGlobalScope('created_by_id', function (Builder $builder) {
-                    $field = sprintf('%s.%s', $builder->getQuery()->from, 'created_by_id');
-
-                    $builder->where($field, auth()->id())->orWhereNull($field);
+            if (!$user->is_admin) {
+                static::addGlobalScope('created_by_id', function (Builder $builder) use ($user) {
+                    $column = 'created_by_id';
+                    if ($user->is_analyst) {
+                        $column = 'analyst_id';
+                    } else if ($user->is_cfo) {
+                        $column = 'cfo_id';
+                    }
+                    $field = sprintf('%s.%s', $builder->getQuery()->from, $column);
+                    $builder->where($field, auth()->id());
                 });
             }
         }

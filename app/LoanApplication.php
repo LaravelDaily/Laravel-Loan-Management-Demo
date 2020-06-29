@@ -29,6 +29,7 @@ class LoanApplication extends Model
         'updated_at',
         'deleted_at',
         'created_by_id',
+        'status_id',
     ];
 
     public function __construct(array $attributes = [])
@@ -64,5 +65,10 @@ class LoanApplication extends Model
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

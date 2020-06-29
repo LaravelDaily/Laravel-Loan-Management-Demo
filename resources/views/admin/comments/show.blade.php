@@ -28,7 +28,7 @@
                             {{ trans('cruds.comment.fields.loan_application') }}
                         </th>
                         <td>
-                            {{ $comment->loan_application->loan_amount ?? '' }}
+                            {{ $comment->loan_application->id ?? '' }}
                         </td>
                     </tr>
                     <tr>

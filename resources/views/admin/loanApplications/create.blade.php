@@ -30,34 +30,6 @@
                 <span class="help-block">{{ trans('cruds.loanApplication.fields.description_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="analyst_id">{{ trans('cruds.loanApplication.fields.analyst') }}</label>
-                <select class="form-control select2 {{ $errors->has('analyst') ? 'is-invalid' : '' }}" name="analyst_id" id="analyst_id">
-                    @foreach($analysts as $id => $analyst)
-                        <option value="{{ $id }}" {{ old('analyst_id') == $id ? 'selected' : '' }}>{{ $analyst }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('analyst'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('analyst') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.loanApplication.fields.analyst_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="cfo_id">{{ trans('cruds.loanApplication.fields.cfo') }}</label>
-                <select class="form-control select2 {{ $errors->has('cfo') ? 'is-invalid' : '' }}" name="cfo_id" id="cfo_id">
-                    @foreach($cfos as $id => $cfo)
-                        <option value="{{ $id }}" {{ old('cfo_id') == $id ? 'selected' : '' }}>{{ $cfo }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('cfo'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('cfo') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.loanApplication.fields.cfo_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

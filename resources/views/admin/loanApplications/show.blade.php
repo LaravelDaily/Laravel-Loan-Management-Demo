@@ -44,7 +44,7 @@
                             {{ trans('cruds.loanApplication.fields.status') }}
                         </th>
                         <td>
-                            {{ $loanApplication->status->name ?? '' }}
+                            {{ auth()->user()->is_user && $loanApplication->status_id < 8 ? $defaultStatus->name : $loanApplication->status->name }}
                         </td>
                     </tr>
                     <tr>

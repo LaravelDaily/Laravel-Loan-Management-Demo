@@ -49,7 +49,7 @@
                                 {{ $comment->id ?? '' }}
                             </td>
                             <td>
-                                {{ $comment->loan_application->loan_amount ?? '' }}
+                                {{ $comment->loan_application->id ?? '' }}
                             </td>
                             <td>
                                 {{ $comment->user->name ?? '' }}
@@ -136,7 +136,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>
