@@ -3,10 +3,10 @@
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
-        return redirect()->route('admin.home')->with('status', session('status'));
+        return redirect()->route('admin.loan-applications.index')->with('status', session('status'));
     }
 
-    return redirect()->route('admin.home');
+    return redirect()->route('admin.loan-applications.index');
 });
 
 Auth::routes();
@@ -25,9 +25,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::resource('users', 'UsersController');
-
-    // Audit Logs
-    Route::resource('audit-logs', 'AuditLogsController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
     // Statuses
     Route::delete('statuses/destroy', 'StatusesController@massDestroy')->name('statuses.massDestroy');

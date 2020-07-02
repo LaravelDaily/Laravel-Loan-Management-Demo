@@ -67,4 +67,9 @@ class LoanApplication extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function logs()
+    {
+        return $this->morphMany(AuditLog::class, 'subject');
+    }
 }

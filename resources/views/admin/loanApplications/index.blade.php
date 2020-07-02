@@ -34,12 +34,14 @@
                         <th>
                             {{ trans('cruds.loanApplication.fields.status') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.loanApplication.fields.analyst') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.loanApplication.fields.cfo') }}
-                        </th>
+                        @if($user->is_admin)
+                            <th>
+                                {{ trans('cruds.loanApplication.fields.analyst') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.loanApplication.fields.cfo') }}
+                            </th>
+                        @endif
                         <th>
                             &nbsp;
                         </th>
@@ -63,12 +65,14 @@
                             <td>
                                 {{ $user->is_user && $loanApplication->status_id < 8 ? $defaultStatus->name : $loanApplication->status->name }}
                             </td>
-                            <td>
-                                {{ $loanApplication->analyst->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $loanApplication->cfo->name ?? '' }}
-                            </td>
+                            @if($user->is_admin)
+                                <td>
+                                    {{ $loanApplication->analyst->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $loanApplication->cfo->name ?? '' }}
+                                </td>
+                            @endif
                             <td>
                                 @if($user->is_admin && in_array($loanApplication->status_id, [1, 3, 4]))
                                     <a class="btn btn-xs btn-success" href="{{ route('admin.loan-applications.showSend', $loanApplication->id) }}">

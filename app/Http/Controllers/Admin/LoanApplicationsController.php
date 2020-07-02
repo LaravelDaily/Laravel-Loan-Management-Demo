@@ -8,6 +8,7 @@ use App\Http\Requests\StoreLoanApplicationRequest;
 use App\Http\Requests\UpdateLoanApplicationRequest;
 use App\LoanApplication;
 use App\Role;
+use App\Services\AuditLogService;
 use App\Status;
 use App\User;
 use Gate;
@@ -67,10 +68,12 @@ class LoanApplicationsController extends Controller
     {
         abort_if(Gate::denies('loan_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $loanApplication->load('status', 'analyst', 'cfo', 'created_by', 'logs.user', 'comments');
         $defaultStatus = Status::find(1);
-        $loanApplication->load('status', 'analyst', 'cfo', 'created_by');
+        $user          = auth()->user();
+        $logs          = AuditLogService::generateLogs($loanApplication);
 
-        return view('admin.loanApplications.show', compact('loanApplication', 'defaultStatus'));
+        return view('admin.loanApplications.show', compact('loanApplication', 'defaultStatus', 'user', 'logs'));
     }
 
     public function destroy(LoanApplication $loanApplication)

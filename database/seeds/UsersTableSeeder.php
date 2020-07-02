@@ -10,21 +10,21 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 'id'             => 1,
-                'name'           => 'Admin',
+                'name'           => 'Trevor Admin Stanbridge',
                 'email'          => 'admin@admin.com',
                 'password'       => '$2y$10$PadOOF6GiHJqI1IQhPZNjeXkKGPip9vJXdhB5ra6lrvZdcZFZDCjy',
                 'remember_token' => null,
             ],
             [
                 'id'             => 2,
-                'name'           => 'Analyst',
+                'name'           => 'John Analyst Stone',
                 'email'          => 'analyst@analyst.com',
                 'password'       => '$2y$10$PadOOF6GiHJqI1IQhPZNjeXkKGPip9vJXdhB5ra6lrvZdcZFZDCjy',
                 'remember_token' => null,
             ],
             [
                 'id'             => 3,
-                'name'           => 'CFO',
+                'name'           => 'Mia CFO Wong',
                 'email'          => 'cfo@cfo.com',
                 'password'       => '$2y$10$PadOOF6GiHJqI1IQhPZNjeXkKGPip9vJXdhB5ra6lrvZdcZFZDCjy',
                 'remember_token' => null,
