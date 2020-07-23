@@ -21,6 +21,7 @@ class StoreLoanApplicationRequest extends FormRequest
         return [
             'loan_amount' => [
                 'required',
+                'gt:0',
             ],
         ];
     }
